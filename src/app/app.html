@@ -1,0 +1,857 @@
+<div class="site-shell">
+  <header class="topbar">
+    <button class="icon-button menu-button" type="button" aria-label="Open menu" title="Menu" (click)="toggleMenu()">
+  <img src="assets/Rr.jpg" alt="Menu" style="width:28px;height:28px;border-radius:50%;object-fit:cover;" />
+    </button>
+
+    <a class="brand" href="#top" aria-label="Rags Aqua World home">
+      <img class="logo-mark" src="assets/logo.png" alt="Rags Aqua World logo" />
+      <div>
+        <h1>RAW</h1>
+        <p>Rags Aqua World</p>
+        <small>A hobby that turned into passionate breeding!!!!</small>
+      </div>
+    </a>
+
+    <div class="header-actions">
+      <div class="search-box" [class.open]="searchOpen()">
+        @if (searchOpen()) {
+        <input type="search" placeholder="Search fish or plants..." [value]="searchTerm()"
+          (input)="applySearch($any($event.target).value)"
+          (keydown.enter)="navigateTo('shop')" />
+        }
+        <button class="icon-button search-button" type="button" aria-label="Search" title="Search"
+          (click)="$event.stopPropagation(); searchOpen.set(!searchOpen()); shopOpen.set(true)">
+          &#128269;
+        </button>
+      </div>
+      <button class="cart-button" [class.has-items]="cartCount() > 0" type="button" aria-label="Open cart" title="Cart" (click)="cartOpen.set(true)">
+        <span class="cart-symbol" aria-hidden="true">&#128722;</span>
+        <strong>{{ cartCount() }}</strong>
+      </button>
+    </div>
+  </header>
+
+  <nav class="side-menu" [class.open]="menuOpen()" aria-label="Main menu">
+    <button type="button" (click)="navigateTo('about')">About us</button>
+    <button type="button" (click)="navigateTo('gallery')">Gallery</button>
+    <button type="button" (click)="sideMenuShopOpen.set(!sideMenuShopOpen())" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+  <span>Shop here</span>
+  <strong style="font-size: 0.8rem; cursor: pointer;" (click)="$event.stopPropagation(); sideMenuShopOpen.set(!sideMenuShopOpen())">
+    {{ sideMenuShopOpen() ? '−' : '+' }}
+  </strong>
+</button>
+    
+    @if (sideMenuShopOpen() && catalog().length) {
+      <button type="button" style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding-left: 20px; font-size: 0.95rem; color: #2d4341;" (click)="sideMenuLiveFishOpen.set(!sideMenuLiveFishOpen())">
+        <span>Live fish</span>
+        <strong style="font-size: 0.8rem;">{{ sideMenuLiveFishOpen() ? '-' : '+' }}</strong>
+      </button>
+      @if (sideMenuLiveFishOpen()) {
+        @for (category of catalog(); track category.id) {
+          <button type="button" style="padding-left: 36px; font-size: 0.9rem; color: #526160;" (click)="selectCategory(category.id); menuOpen.set(false); navigateTo('shop')">
+            {{ category.name }}
+          </button>
+        }
+      }
+      <button type="button" style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding-left: 20px; font-size: 0.95rem; color: #2d4341;" (click)="sideMenuPlantsOpen.set(!sideMenuPlantsOpen())">
+        <span>Plants</span>
+        <strong style="font-size: 0.8rem;">{{ sideMenuPlantsOpen() ? '-' : '+' }}</strong>
+      </button>
+      @if (sideMenuPlantsOpen()) {
+        @for (category of plantCatalog(); track category.id) {
+          <button type="button" style="padding-left: 36px; font-size: 0.9rem; color: #526160;" (click)="selectPlantCategory(category.id); menuOpen.set(false); navigateTo('shop')">
+            {{ category.name }}
+          </button>
+        }
+      }
+    }
+
+    <button type="button" (click)="navigateTo('know-more')" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+      <span>Know more</span>
+      <strong style="font-size: 0.8rem; cursor: pointer;" (click)="$event.stopPropagation(); sideMenuKnowMoreOpen.set(!sideMenuKnowMoreOpen())">
+        {{ sideMenuKnowMoreOpen() ? '-' : '+' }}
+      </strong>
+    </button>
+    @if (sideMenuKnowMoreOpen()) {
+      <button type="button" style="padding-left: 28px; font-size: 0.9rem; color: #526160;" (click)="navigateTo('faqs')">FAQs</button>
+      <button type="button" style="padding-left: 28px; font-size: 0.9rem; color: #526160;" (click)="navigateTo('fish-profile')">Fish profile</button>
+    }
+
+    <button type="button" (click)="navigateTo('contact')">Contact us</button>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <svg class="hero-bubble-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"
+        focusable="false"
+        style="position:absolute;inset:0;z-index:4;width:100%;height:100%;pointer-events:none;">
+        <defs>
+          <radialGradient id="heroBubbleFill" cx="32%" cy="28%" r="72%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.82" />
+            <stop offset="18%" stop-color="#ffffff" stop-opacity="0.3" />
+            <stop offset="55%" stop-color="#e8fbff" stop-opacity="0.08" />
+            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.02" />
+          </radialGradient>
+          <filter id="heroBubbleGlass" x="-60%" y="-60%" width="220%" height="220%">
+            <feDropShadow dx="0" dy="0" stdDeviation="0.45" flood-color="#e8fbff" flood-opacity="0.42" />
+          </filter>
+        </defs>
+        <g class="svg-bubble" opacity="0.42">
+          <circle cx="8" cy="92" r="1.8" fill="url(#heroBubbleFill)" stroke="#e8fbff" stroke-width="0.18" filter="url(#heroBubbleGlass)" />
+          <animateTransform attributeName="transform" type="translate" values="0 0; 2 -96" dur="7s"
+            repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.22;0.55;0.48;0" keyTimes="0;0.12;0.82;1" dur="7s"
+            repeatCount="indefinite" />
+        </g>
+        <g class="svg-bubble" opacity="0.42">
+          <circle cx="18" cy="88" r="2.9" fill="url(#heroBubbleFill)" stroke="#e8fbff" stroke-width="0.18" filter="url(#heroBubbleGlass)" />
+          <animateTransform attributeName="transform" type="translate" values="0 0; -2 -94" dur="8.2s"
+            begin="-2s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.22;0.55;0.48;0" keyTimes="0;0.14;0.84;1" dur="8.2s"
+            begin="-2s" repeatCount="indefinite" />
+        </g>
+        <g class="svg-bubble" opacity="0.42">
+          <circle cx="31" cy="94" r="1.5" fill="url(#heroBubbleFill)" stroke="#e8fbff" stroke-width="0.18" filter="url(#heroBubbleGlass)" />
+          <animateTransform attributeName="transform" type="translate" values="0 0; 3 -98" dur="6.3s"
+            begin="-1.1s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.22;0.55;0.48;0" keyTimes="0;0.1;0.78;1" dur="6.3s"
+            begin="-1.1s" repeatCount="indefinite" />
+        </g>
+        <g class="svg-bubble" opacity="0.42">
+          <circle cx="43" cy="90" r="2.3" fill="url(#heroBubbleFill)" stroke="#e8fbff" stroke-width="0.18" filter="url(#heroBubbleGlass)" />
+          <animateTransform attributeName="transform" type="translate" values="0 0; -3 -98" dur="7.6s"
+            begin="-3.6s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.22;0.55;0.48;0" keyTimes="0;0.12;0.84;1" dur="7.6s"
+            begin="-3.6s" repeatCount="indefinite" />
+        </g>
+        <g class="svg-bubble" opacity="0.42">
+          <circle cx="57" cy="92" r="2" fill="url(#heroBubbleFill)" stroke="#e8fbff" stroke-width="0.18" filter="url(#heroBubbleGlass)" />
+          <animateTransform attributeName="transform" type="translate" values="0 0; 2 -98" dur="6.8s"
+            begin="-0.7s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.22;0.55;0.48;0" keyTimes="0;0.12;0.8;1" dur="6.8s"
+            begin="-0.7s" repeatCount="indefinite" />
+        </g>
+        <g class="svg-bubble" opacity="0.42">
+          <circle cx="69" cy="86" r="3.2" fill="url(#heroBubbleFill)" stroke="#e8fbff" stroke-width="0.18" filter="url(#heroBubbleGlass)" />
+          <animateTransform attributeName="transform" type="translate" values="0 0; -2 -94" dur="8.6s"
+            begin="-4.8s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.22;0.55;0.48;0" keyTimes="0;0.12;0.86;1" dur="8.6s"
+            begin="-4.8s" repeatCount="indefinite" />
+        </g>
+        <g class="svg-bubble" opacity="0.42">
+          <circle cx="82" cy="93" r="2.1" fill="url(#heroBubbleFill)" stroke="#e8fbff" stroke-width="0.18" filter="url(#heroBubbleGlass)" />
+          <animateTransform attributeName="transform" type="translate" values="0 0; 3 -98" dur="7.1s"
+            begin="-2.8s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.22;0.55;0.48;0" keyTimes="0;0.1;0.82;1" dur="7.1s"
+            begin="-2.8s" repeatCount="indefinite" />
+        </g>
+        <g class="svg-bubble" opacity="0.42">
+          <circle cx="93" cy="89" r="1.6" fill="url(#heroBubbleFill)" stroke="#e8fbff" stroke-width="0.18" filter="url(#heroBubbleGlass)" />
+          <animateTransform attributeName="transform" type="translate" values="0 0; -1 -92" dur="5.9s"
+            begin="-1.7s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.22;0.55;0.48;0" keyTimes="0;0.12;0.8;1" dur="5.9s"
+            begin="-1.7s" repeatCount="indefinite" />
+        </g>
+      </svg>
+      <div class="hero-copy">
+        <p class="eyebrow"></p>
+        <h2 class="masked-heading" aria-label="We sell what we breed">
+          <span class="mask-line"><span>We sell</span></span>
+          <span class="mask-line"><span>what we breed!!</span></span>
+        </h2>
+        <ul class="hero-points">
+          <li>Select your fish and connect with us on WhatsApp before ordering.</li>
+          <li>Know how your fish are raised, cared for, and whether they suit your aquarium.</li>
+          <li>At RAW, responsible fishkeeping comes before business.</li>
+        </ul>
+        <a class="primary-link" href="#shop" (click)="$event.preventDefault(); navigateTo('shop')">Shop here</a>
+      </div>
+      <div class="hero-tank" aria-label="Aquarium preview">
+        <div class="aquarium-background"></div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <button class="section-toggle" type="button" (click)="aboutOpen.set(!aboutOpen())">
+        <span>About us</span>
+        <strong>{{ aboutOpen() ? '-' : '+' }}</strong>
+      </button>
+      @if (aboutOpen()) {
+      <div class="section-body">
+        <p>
+          RAW began as a hobby — driven by frustration with unhealthy, overpriced fish in the local market.
+Instead of compromising, we started breeding our own fish to enjoy better quality.
+As our fish thrived, we began sharing them with fellow hobbyists — and RAW was born.
+<br><br>
+Even today, we stay true to that foundation:<br>
+ ✅ We sell what we breed<br>
+ ✅ We don’t prioritize profit over quality<br>
+ ✅ We aim to match local prices — with better fish<br><br>
+
+We also believe something many sellers ignore:<br>
+👉 Not every fish is right for every aquarium
+That’s why we interact with customers before every purchase — to ensure responsible fishkeeping.<br>
+   <br>
+   From Natural Tanks to Your Aquarium
+   Built by a hobbyist. Driven by quality. Focused on fish welfare.<br>
+ 🌿 Naturally raised<br>
+ 🧬 Grown from juveniles<br>
+ 💰 Fair, honest pricing<br>
+ <br>
+
+ 🌱 Our Breeding Philosophy (Unchanged Core, Now Reinforced)<br>
+       We Grow Before We Breed<br>
+Our broodstock are raised from juveniles — not bought as breeding adults.<br><br>
+
+🌿 Natural Environment Breeding<br>
+We recreate natural habitats instead of using artificial setups.<br><br>
+
+🍃 In-House Nutrition<br>
+Our fish are fed in-house prepared food that mimics natural diets.<br><br>
+
+🐟 Carefully Selected Additions<br>
+
+While most fish we offer are bred in-house, we occasionally source a small number of species from trusted and experienced breeders whose standards align with our own. Every fish is quarantined and observed in our facility before being offered for sale, ensuring health, quality, and compatibility with our approach to fishkeeping.
+
+This allows hobbyists to find both our home-bred fish and selected complementary species in one place, without compromising on fish welfare.<br><br> 
+✅ Core Principle<br>
+Healthy fish come from knowledge, care, and patience — not shortcuts.<br><br> 
+
+ At RAW, we believe buying fish should be personal, informed, and responsible — not just a quick checkout.
+<br>
+✅ Our process:<br>
+    1. Browse our catalog<br>
+    2. Connect with us on WhatsApp<br>
+    3. Get guidance and clarification<br>
+    4. Confirm order<br>
+    5. Make payment<br><br>
+👉 This allows us to:<br>
+    * Understand your aquarium setup<br>
+    * Suggest compatible fish<br>
+    * Prevent wrong purchases<br>
+    * Ensure fish safety
+        </p>
+
+        <div id="gallery" class="gallery-block">
+          <button class="section-toggle nested" type="button" (click)="galleryOpen.set(!galleryOpen())">
+            <span>Gallery</span>
+            <strong>{{ galleryOpen() ? '-' : '+' }}</strong>
+          </button>
+          @if (galleryOpen()) {
+          <div class="gallery-grid">
+            @for (image of galleryImages; track image.title) {
+            <figure>
+              <img [src]="image.src" [alt]="image.title" />
+              <figcaption>{{ image.title }}</figcaption>
+            </figure>
+            }
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </section>
+
+    <section class="section shop-section" id="shop" tabindex="-1">
+  <button class="section-toggle" type="button" (click)="shopOpen.set(!shopOpen())">
+    <span>Shop here</span>
+    <strong>{{ shopOpen() ? '-' : '+' }}</strong>
+  </button>
+
+  @if (shopOpen()) {
+  <div class="section-body">
+    @if (catalogError()) {
+    <p class="notice">{{ catalogError() }}</p>
+    } @else {
+    <div class="shop-section-tabs" role="tablist" aria-label="Shop sections">
+      <button type="button" [class.active]="selectedShopSection() === 'live-fish'" (click)="selectShopSection('live-fish')">
+        Live fish
+      </button>
+      <button type="button" [class.active]="selectedShopSection() === 'plants'" (click)="selectShopSection('plants')">
+        Plants
+      </button>
+    </div>
+
+    @if (selectedShopSection() === 'live-fish') {
+    <div class="category-tabs" role="tablist" aria-label="Fish categories">
+      <button type="button" [class.active]="selectedCategory() === 'all'" (click)="selectCategory('all')">
+        All
+      </button>
+      @for (category of catalog(); track category.id) {
+      <button type="button" [class.active]="selectedCategory() === category.id"
+        (click)="selectCategory(category.id)">
+        {{ category.name }}
+      </button>
+      }
+    </div>
+
+    <div class="catalog-grid">
+      @for (item of visibleFish(); track item.id) {
+      <article class="fish-card" [class.stock-unavailable]="!isPurchasable(item)">
+        <div class="catalog-media-viewer" [class.navigator-active]="mediaNavigatorVisible('catalog-' + item.id)"
+          (pointerenter)="showMediaNavigator('catalog-' + item.id)"
+          (pointerdown)="showMediaNavigator('catalog-' + item.id)">
+          @if (selectedCatalogMedia(item); as media) {
+            @if (media.type === 'image') {
+            <div class="fish-image-frame" (pointerenter)="activateImageZoom($event)" (pointermove)="updateImageZoom($event)"
+              (pointerleave)="resetImageZoom($event)" (pointerdown)="activateImageZoom($event)"
+              (pointerup)="resetImageZoom($event)" (pointercancel)="resetImageZoom($event)">
+              <img [src]="media.src" [alt]="item.name" />
+            </div>
+            } @else {
+            <video class="catalog-media-video" [src]="media.src" autoplay [muted]="true" loop playsinline preload="auto"></video>
+            }
+          }
+          @if (fishProfileMedia(item).length > 1) {
+          <button class="media-arrow previous" type="button" aria-label="Previous media"
+            (click)="changeCatalogMedia(item, -1)">&#8249;</button>
+          <button class="media-arrow next" type="button" aria-label="Next media"
+            (click)="changeCatalogMedia(item, 1)">&#8250;</button>
+          <div class="media-dots" aria-label="Fish media position">
+            @for (media of fishProfileMedia(item); track media.src; let index = $index) {
+            <button type="button" [class.active]="selectedCatalogMediaIndex(item) === index"
+              [attr.aria-label]="'Show media ' + (index + 1)"
+              (click)="selectCatalogMedia(item, index)"></button>
+            }
+          </div>
+          }
+        </div>
+        <div class="fish-card-body">
+          <p class="category-name">{{ item.categoryName }}</p>
+          <h3>{{ item.name }}</h3>
+          @if (item.size) {
+          <small class="size-tag">{{ item.size }}</small>
+          }
+          <p class="price-tag">
+            @if (discountedPrice(item); as discounted) {
+            <span class="original-price">&#8377;{{ item.prices.each }}</span>
+            <span>&#8377;{{ discounted }} each</span>
+            <span class="discount-badge">{{ discountLabel(item) }}</span>
+            } @else {
+            <span>&#8377;{{ item.prices.each }} each</span>
+            }
+            @if (itemStatus(item) === 'LS') {
+            <span class="stock-badge limited">Limited stock</span>
+            }
+          </p>
+          @if (!isPurchasable(item)) {
+          <p class="stock-badge {{ statusClass(item) }}">{{ statusLabel(item) }}</p>
+          }
+          <div class="price-controls">
+            @if (isPurchasable(item)) {
+            <div class="qty-selector">
+              <button type="button"
+                (click)="updateItemQuantity(item.id, getItemQuantity(item.id, item.min) - 1, item.min, item.max)">-</button>
+              <span>{{ getItemQuantity(item.id, item.min) }}</span>
+              <button type="button"
+                (click)="updateItemQuantity(item.id, getItemQuantity(item.id, item.min) + 1, item.min, item.max)">+</button>
+            </div>
+            @if (quantityWarning(item.id)) {
+            <p class="quantity-warning">{{ quantityWarning(item.id) }}</p>
+            }
+            <button type="button" class="add-to-cart-btn" [class.go-to-cart]="isInCart(item.id)"
+              (click)="isInCart(item.id) ? cartOpen.set(true) : addToCart(item, getItemQuantity(item.id, item.min))">
+              {{ isInCart(item.id) ? 'Go to Cart' : 'Add to Cart' }}
+            </button>
+            }
+            <button type="button" class="fish-profile-btn" (click)="openFishProfile(item)">
+              Fish Profile
+            </button>
+          </div>
+        </div>
+      </article>
+      } @empty {
+      <p class="notice">No fish match this search.</p>
+      }
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 24px;">
+      @if (hasMore()) {
+      <button type="button" class="load-more-btn" (click)="loadMore()">Load More Fish</button>
+      }
+    </div>
+    } @else {
+    @if (plantCatalog().length) {
+    <div class="category-tabs" role="tablist" aria-label="Plant categories">
+      <button type="button" [class.active]="selectedPlantCategory() === 'all'" (click)="selectPlantCategory('all')">
+        All
+      </button>
+      @for (category of plantCatalog(); track category.id) {
+      <button type="button" [class.active]="selectedPlantCategory() === category.id"
+        (click)="selectPlantCategory(category.id)">
+        {{ category.name }}
+      </button>
+      }
+    </div>
+
+    <div class="catalog-grid plant-grid">
+      @for (item of filteredPlants(); track item.id) {
+      <article class="fish-card plant-card">
+        <div class="fish-image-frame" (pointerenter)="activateImageZoom($event)" (pointermove)="updateImageZoom($event)"
+          (pointerleave)="resetImageZoom($event)" (pointerdown)="activateImageZoom($event)"
+          (pointerup)="resetImageZoom($event)" (pointercancel)="resetImageZoom($event)">
+          <img [src]="primaryPlantImage(item)" [alt]="item.name" />
+        </div>
+        <div class="fish-card-body">
+          <p class="category-name">{{ item.categoryName }}</p>
+          <h3>{{ item.name }}</h3>
+          @if (item.prices?.each) {
+          <p class="price-tag">
+            <span>&#8377;{{ item.prices?.each }} per {{ plantPriceUnit(item) }}</span>
+            @if (itemStatus(item) === 'LS') {
+            <span class="stock-badge limited">Limited stock</span>
+            }
+          </p>
+          }
+          @if (!isPurchasable(item)) {
+          <p class="stock-badge {{ statusClass(item) }}">{{ statusLabel(item) }}</p>
+          } @else if (item.prices?.each) {
+          <div class="price-controls">
+            <div class="qty-selector">
+              <button type="button"
+                (click)="updateItemQuantity(item.id, getItemQuantity(item.id, item.min ?? 1) - 1, item.min ?? 1, item.max ?? 999)">-</button>
+              <span>{{ getItemQuantity(item.id, item.min ?? 1) }}</span>
+              <button type="button"
+                (click)="updateItemQuantity(item.id, getItemQuantity(item.id, item.min ?? 1) + 1, item.min ?? 1, item.max ?? 999)">+</button>
+            </div>
+            @if (quantityWarning(item.id)) {
+            <p class="quantity-warning">{{ quantityWarning(item.id) }}</p>
+            }
+            <button type="button" class="add-to-cart-btn" [class.go-to-cart]="isInCart(item.id, 'plant')"
+              (click)="isInCart(item.id, 'plant') ? cartOpen.set(true) : addToCart(item, getItemQuantity(item.id, item.min ?? 1))">
+              {{ isInCart(item.id, 'plant') ? 'Go to Cart' : 'Add to Cart' }}
+            </button>
+            <button type="button" class="fish-profile-btn" (click)="openPlantProfile(item)">
+              Plant Profile
+            </button>
+          </div>
+          }
+        </div>
+      </article>
+      } @empty {
+      <p class="notice">No plants match this search.</p>
+      }
+    </div>
+    } @else {
+    <p class="notice">Plants will be added here soon. Once plant entries are added in catalog.json, this search will include them too.</p>
+    }
+    }
+    }
+  </div>
+  }
+</section>
+
+  @if (plantShippingModalOpen()) {
+  <aside class="policy-modal" aria-label="Plant shipping information">
+    <div class="policy-modal-panel plant-shipping-modal">
+      <div class="profile-modal-head">
+        <h2>Plant Shipping</h2>
+        <button class="icon-button" type="button" aria-label="Close plant shipping message"
+          (click)="closePlantShippingNotice()">&times;</button>
+      </div>
+      <div class="policy-modal-body">
+        <p class="plant-shipping-warning">
+          &#128230; Plant orders placed before 12 PM Thursday ship on Saturday. Orders placed after this cutoff will be shipped the following Saturday.
+        </p>
+        <div class="modal-ok-actions">
+          <button type="button" class="checkout-button" (click)="closePlantShippingNotice()">OK</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+  }
+
+  @if (doaPolicyModalOpen()) {
+  <aside class="policy-modal" aria-label="DOA and refund policy">
+    <div class="policy-modal-panel">
+      <div class="profile-modal-head">
+        <h2>DOA &amp; Refund Policy</h2>
+        <button class="icon-button" type="button" aria-label="Close DOA policy"
+          (click)="closeDoaPolicy()">&times;</button>
+      </div>
+      <div class="policy-modal-body">
+        <h3>Dead on Arrival (DOA) Policy</h3>
+        <p>We take great care to ensure all livestock are healthy and securely packed before shipment.</p>
+        <p>In the rare event of a Dead on Arrival (DOA), customers must notify us within 2 hours of delivery and provide clear unboxing photos and videos showing the unopened bag and affected livestock for claim verification.</p>
+        <ul>
+          <li>Claims submitted after the specified time window may not be eligible for compensation.</li>
+          <li>Approved DOA claims may be compensated through replacement, store credit, or refund of the affected livestock's purchase value.</li>
+          <li>Shipping charges are non-refundable.</li>
+          <li>We are not responsible for incorrect shipping information or failure to receive the package on the first delivery attempt.</li>
+          <li>Compensation applies only to livestock confirmed as DOA upon arrival.</li>
+        </ul>
+        <p>By placing an order, customers acknowledge and agree to this DOA policy.</p>
+      </div>
+    </div>
+  </aside>
+  }
+
+    <section class="section know-more-section" id="know-more">
+      <button class="section-toggle" type="button" (click)="knowMoreOpen.set(!knowMoreOpen())">
+        <span>Know more</span>
+        <strong>{{ knowMoreOpen() ? '-' : '+' }}</strong>
+      </button>
+      @if (knowMoreOpen()) {
+      <div class="section-body know-more-body">
+        <div id="faqs" class="info-block">
+          <button class="section-toggle nested" type="button" (click)="faqsOpen.set(!faqsOpen())">
+            <span>FAQs</span>
+            <strong>{{ faqsOpen() ? '-' : '+' }}</strong>
+          </button>
+          @if (faqsOpen()) {
+          <div class="info-grid">
+            <article>
+              <h3>How do I place an order?</h3>
+              <p>Browse the catalog, add fish to cart, and checkout through WhatsApp. We confirm availability, suitability, and shipping before payment.</p>
+            </article>
+            <article>
+              <h3>Are all fish bred at RAW?</h3>
+              <p>Most fish are bred in-house. Selected additions from trusted breeders are quarantined and observed before they are offered.</p>
+            </article>
+            <article>
+              <h3>Can I buy any fish for any tank?</h3>
+              <p>No. We discuss your aquarium setup first so the fish you choose are suitable for your tank and existing livestock.</p>
+            </article>
+          </div>
+          }
+        </div>
+
+        <div id="fish-profile" class="info-block">
+          <button class="section-toggle nested" type="button" (click)="fishProfileOpen.set(!fishProfileOpen())">
+            <span>Fish profile</span>
+            <strong>{{ fishProfileOpen() ? '-' : '+' }}</strong>
+          </button>
+          @if (fishProfileOpen()) {
+          <div class="fish-profile-grid">
+            @for (item of allFish(); track item.id) {
+            <article class="fish-profile-card">
+              <div class="fish-image-frame">
+                <img [src]="primaryFishImage(item)" [alt]="item.name" />
+              </div>
+              <div class="fish-profile-content">
+                <p class="category-name">{{ item.categoryName }}</p>
+                <h3>{{ item.name }}</h3>
+                <p>{{ fishProfileSummary(item) }}</p>
+                <ul class="profile-parameters">
+                  @for (detail of fishProfileDetails(item); track detail.label) {
+                  <li><strong>{{ detail.label }}:</strong> {{ detail.value }}</li>
+                  }
+                </ul>
+                <div class="profile-meta">
+                  @if (item.size) {
+                  <span>{{ item.size }}</span>
+                  }
+                  <span>&#8377;{{ item.prices.each }} each</span>
+                </div>
+              </div>
+            </article>
+            } @empty {
+            <p class="notice">Fish profiles will appear here once visible fish are added in catalog.json.</p>
+            }
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <button class="section-toggle" type="button" (click)="contactOpen.set(!contactOpen())">
+        <span>Contact us</span>
+        <strong>{{ contactOpen() ? '-' : '+' }}</strong>
+      </button>
+      @if (contactOpen()) {
+      <div class="contact-row">
+        <a href="https://wa.me/919036597078" target="_blank" rel="noopener" aria-label="Message Rags Aqua World on WhatsApp">
+          <span class="social-logo whatsapp-logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M12.04 3.2a8.74 8.74 0 0 0-7.47 13.28L3.7 20.8l4.43-.84a8.74 8.74 0 1 0 3.91-16.76Zm0 15.86a7.1 7.1 0 0 1-3.61-.99l-.25-.15-2.63.5.5-2.55-.17-.26a7.11 7.11 0 1 1 6.16 3.45Zm3.9-5.32c-.21-.11-1.27-.63-1.47-.7-.2-.08-.34-.11-.49.1-.14.22-.56.7-.69.85-.13.14-.25.16-.47.05-.21-.11-.9-.33-1.72-1.06-.64-.57-1.07-1.27-1.19-1.49-.13-.22-.01-.34.1-.45.1-.1.21-.25.32-.38.1-.13.14-.22.21-.36.07-.15.04-.27-.02-.38-.05-.11-.49-1.18-.67-1.62-.18-.43-.36-.37-.49-.38h-.42c-.14 0-.38.05-.58.27-.2.22-.76.74-.76 1.8s.78 2.09.89 2.24c.11.14 1.54 2.35 3.73 3.29.52.22.93.36 1.25.46.52.17 1 .14 1.37.09.42-.06 1.27-.52 1.45-1.02.18-.5.18-.93.13-1.02-.06-.09-.2-.14-.42-.25Z" />
+            </svg>
+          </span>
+          <span>919036597078</span>
+        </a>
+        <a href="https://www.instagram.com/rags_aqua_world?igsh=NDc2c3hiOGN2bHVo" target="_blank" rel="noopener"
+          aria-label="Rags Aqua World Instagram">
+          <span class="social-logo instagram-logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M7.35 2.75h9.3a4.6 4.6 0 0 1 4.6 4.6v9.3a4.6 4.6 0 0 1-4.6 4.6h-9.3a4.6 4.6 0 0 1-4.6-4.6v-9.3a4.6 4.6 0 0 1 4.6-4.6Zm0 1.85a2.75 2.75 0 0 0-2.75 2.75v9.3a2.75 2.75 0 0 0 2.75 2.75h9.3a2.75 2.75 0 0 0 2.75-2.75v-9.3a2.75 2.75 0 0 0-2.75-2.75h-9.3Zm4.65 3.2a4.2 4.2 0 1 1 0 8.4 4.2 4.2 0 0 1 0-8.4Zm0 1.8a2.4 2.4 0 1 0 0 4.8 2.4 2.4 0 0 0 0-4.8Zm4.43-2.9a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z" />
+            </svg>
+          </span>
+          <span>RagsAquaWorld</span>
+        </a>
+        <a href="mailto:ragsaquaworld@gmail.com" aria-label="Email Rags Aqua World">
+          <span class="social-logo email-logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M4.75 5.5h14.5c1.25 0 2.25 1 2.25 2.25v8.5c0 1.25-1 2.25-2.25 2.25H4.75c-1.25 0-2.25-1-2.25-2.25v-8.5C2.5 6.5 3.5 5.5 4.75 5.5Zm.02 1.75 7.23 5.28 7.23-5.28H4.77Zm15.01 1.58-7.28 5.32a.85.85 0 0 1-1 0L4.22 8.83v7.42c0 .29.24.53.53.53h14.5c.29 0 .53-.24.53-.53V8.83Z" />
+            </svg>
+          </span>
+          <span>ragsaquaworld@gmail.com</span>
+        </a>
+      </div>
+      }
+    </section>
+
+  </main>
+
+  @if (selectedPlantProfile(); as item) {
+  <aside class="profile-modal" aria-label="Plant profile">
+    <div class="profile-modal-panel">
+      <div class="profile-modal-head">
+        <div>
+          <p class="category-name">{{ item.categoryName }}</p>
+          <h2>{{ item.name }}</h2>
+        </div>
+        <button class="icon-button" type="button" aria-label="Close plant profile"
+          (click)="closePlantProfile()">&times;</button>
+      </div>
+
+      <div class="profile-modal-body">
+        <div class="profile-modal-media">
+          <div class="fish-image-frame" (pointerenter)="activateImageZoom($event)" (pointermove)="updateImageZoom($event)"
+            (pointerleave)="resetImageZoom($event)" (pointerdown)="activateImageZoom($event)"
+            (pointerup)="resetImageZoom($event)" (pointercancel)="resetImageZoom($event)">
+            <img [src]="primaryPlantImage(item)" [alt]="item.name" />
+          </div>
+
+          @if (itemStatus(item) === 'LS') {
+          <span class="stock-badge limited">Limited stock</span>
+          }
+          @if (item.prices?.each) {
+          <p class="price-tag"><span>&#8377;{{ item.prices?.each }} per {{ plantPriceUnit(item) }}</span></p>
+          }
+          @if (!isPurchasable(item)) {
+          <p class="stock-badge {{ statusClass(item) }}">{{ statusLabel(item) }}</p>
+          } @else if (item.prices?.each) {
+          <div class="profile-modal-actions">
+            <div class="qty-selector">
+              <button type="button"
+                (click)="updateItemQuantity(item.id, getItemQuantity(item.id, item.min ?? 1) - 1, item.min ?? 1, item.max ?? 999)">-</button>
+              <span>{{ getItemQuantity(item.id, item.min ?? 1) }}</span>
+              <button type="button"
+                (click)="updateItemQuantity(item.id, getItemQuantity(item.id, item.min ?? 1) + 1, item.min ?? 1, item.max ?? 999)">+</button>
+            </div>
+            @if (quantityWarning(item.id)) {
+            <p class="quantity-warning">{{ quantityWarning(item.id) }}</p>
+            }
+            <button type="button" class="add-to-cart-btn" [class.go-to-cart]="isInCart(item.id, 'plant')"
+              (click)="isInCart(item.id, 'plant') ? goToCartFromPlantProfile() : addToCart(item, getItemQuantity(item.id, item.min ?? 1))">
+              {{ isInCart(item.id, 'plant') ? 'Go to Cart' : 'Add to Cart' }}
+            </button>
+          </div>
+          }
+        </div>
+
+        <div>
+          <p>{{ plantProfileSummary(item) }}</p>
+          <dl class="modal-parameters">
+            @for (detail of plantProfileDetails(item); track detail.label) {
+            <div>
+              <dt>{{ detail.label }}</dt>
+              <dd>{{ detail.value }}</dd>
+            </div>
+            }
+          </dl>
+        </div>
+      </div>
+    </div>
+  </aside>
+  }
+
+  @if (selectedFishProfile(); as item) {
+  <aside class="profile-modal" aria-label="Fish profile">
+    <div class="profile-modal-panel">
+      <div class="profile-modal-head">
+        <div>
+          <p class="category-name">{{ item.categoryName }}</p>
+          <h2>{{ item.name }}</h2>
+        </div>
+        <button class="icon-button" type="button" aria-label="Close fish profile" (click)="closeFishProfile()">&times;</button>
+      </div>
+
+      <div class="profile-modal-body">
+        <div class="profile-modal-media">
+          <div class="profile-media-viewer" [class.navigator-active]="mediaNavigatorVisible('profile')"
+            (pointerenter)="showMediaNavigator('profile')"
+            (pointerdown)="showMediaNavigator('profile')">
+            @if (selectedProfileMedia(item); as media) {
+              @if (media.type === 'image') {
+              <div class="fish-image-frame" (pointerenter)="activateImageZoom($event)" (pointermove)="updateImageZoom($event)"
+                (pointerleave)="resetImageZoom($event)" (pointerdown)="activateImageZoom($event)"
+                (pointerup)="resetImageZoom($event)" (pointercancel)="resetImageZoom($event)">
+                <img [src]="media.src" [alt]="item.name" />
+              </div>
+              } @else {
+<video
+  class="profile-media-video"
+  [src]="media.src"
+  autoplay
+  [muted]="true"
+  loop
+  playsinline
+  preload="auto">
+</video>          }
+            }
+            @if (fishProfileMedia(item).length > 1) {
+            <button class="media-arrow previous" type="button" aria-label="Previous media"
+              (click)="changeProfileMedia(item, -1)">&#8249;</button>
+            <button class="media-arrow next" type="button" aria-label="Next media"
+              (click)="changeProfileMedia(item, 1)">&#8250;</button>
+            <div class="media-dots" aria-label="Fish media position">
+              @for (media of fishProfileMedia(item); track media.src; let index = $index) {
+              <button type="button" [class.active]="selectedProfileMediaIndex() === index"
+                [attr.aria-label]="'Show media ' + (index + 1)"
+                (click)="selectProfileMedia(index)"></button>
+              }
+            </div>
+            }
+          </div>
+
+          @if (fishProfileMedia(item).length > 1) {
+          <div class="profile-media-strip">
+            @for (media of fishProfileMedia(item); track media.src; let index = $index) {
+            <button type="button" [class.active]="selectedProfileMediaIndex() === index"
+              [attr.aria-label]="'Show media ' + (index + 1)"
+              (click)="selectProfileMedia(index)">
+              @if (media.type === 'image') {
+              <img [src]="media.src" [alt]="item.name" />
+              } @else {
+              <span class="video-thumb">Video</span>
+              }
+            </button>
+            }
+          </div>
+          }
+
+          @if (itemStatus(item) === 'LS') {
+          <span class="stock-badge limited">Limited stock</span>
+          }
+          <p class="price-tag">
+            @if (discountedPrice(item); as discounted) {
+            <span class="original-price">&#8377;{{ item.prices.each }}</span>
+            <span>&#8377;{{ discounted }} each</span>
+            <span class="discount-badge">{{ discountLabel(item) }}</span>
+            } @else {
+            <span>&#8377;{{ item.prices.each }} each</span>
+            }
+          </p>
+          @if (!isPurchasable(item)) {
+          <p class="stock-badge {{ statusClass(item) }}">{{ statusLabel(item) }}</p>
+          } @else {
+          <div class="profile-modal-actions">
+            <div class="qty-selector">
+              <button type="button"
+                (click)="updateItemQuantity(item.id, getItemQuantity(item.id, item.min) - 1, item.min, item.max)">-</button>
+              <span>{{ getItemQuantity(item.id, item.min) }}</span>
+              <button type="button"
+                (click)="updateItemQuantity(item.id, getItemQuantity(item.id, item.min) + 1, item.min, item.max)">+</button>
+            </div>
+            @if (quantityWarning(item.id)) {
+            <p class="quantity-warning">{{ quantityWarning(item.id) }}</p>
+            }
+            <button type="button" class="add-to-cart-btn" [class.go-to-cart]="isInCart(item.id)"
+              (click)="isInCart(item.id) ? goToCartFromProfile() : addToCart(item, getItemQuantity(item.id, item.min))">
+              {{ isInCart(item.id) ? 'Go to Cart' : 'Add to Cart' }}
+            </button>
+          </div>
+          }
+        </div>
+
+        <div>
+          <p>{{ fishProfileSummary(item) }}</p>
+          <dl class="modal-parameters">
+            @for (detail of fishProfileDetails(item); track detail.label) {
+            <div>
+              <dt>{{ detail.label }}</dt>
+              <dd>{{ detail.value }}</dd>
+            </div>
+            }
+          </dl>
+        </div>
+      </div>
+    </div>
+  </aside>
+  }
+
+  @if (cartOpen()) {
+  <aside class="cart-drawer" aria-label="Cart">
+    <div class="cart-panel">
+      <div class="cart-head">
+        <div class="cart-title">
+          <img src="assets/Cart Logo.png" alt="Rags Aqua World cart logo" />
+          <h2>Your cart</h2>
+        </div>
+        <button class="icon-button" type="button" aria-label="Close cart" (click)="cartOpen.set(false)">&times;</button>
+      </div>
+
+      @if (cart().length) {
+      <div class="cart-items">
+        @for (line of cart(); track line.key) {
+        <div class="cart-line">
+          <div>
+            <strong>{{ line.name }}</strong>
+            <span>{{ cartLineUnitLabel(line) }} &middot; &#8377;{{ line.unitPrice }}</span>
+          </div>
+          <div class="cart-line-actions">
+            <div class="qty">
+              <button type="button" (click)="changeQty(line.key, -1)">-</button>
+              <span>{{ line.quantity }}</span>
+              <button type="button" (click)="changeQty(line.key, 1)">+</button>
+            </div>
+            <button class="delete-cart-item" type="button" aria-label="Remove {{ line.name }} from cart"
+              title="Remove from cart" (click)="removeFromCart(line.key)">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h10l-.7 11H7.7L7 9Zm3 2v7h2v-7h-2Zm4 0v7h2v-7h-2Z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="checkout-box">
+        <label for="customerWhatsapp">Your WhatsApp number *</label>
+        <input id="customerWhatsapp" type="tel" placeholder="+91..." [value]="customerWhatsapp()"
+          (input)="customerWhatsapp.set($any($event.target).value)" />
+        
+        <label for="customerAddress">Delivery Address (Optional)</label>
+        <textarea id="customerAddress" placeholder="Street address, city, pincode..." [value]="customerAddress()"
+          (input)="customerAddress.set($any($event.target).value)"
+          rows="3"
+          style="resize: vertical; width: 100%; font-family: inherit; padding: 8px; border: 1px solid #bdd4d0; border-radius: 6px; font-size: 0.9rem;"></textarea>
+        
+        <div class="policy-acceptance">
+          <label>
+            <input type="checkbox" [checked]="doaPolicyAccepted()"
+              (change)="doaPolicyAccepted.set($any($event.target).checked)" />
+            <span>
+              I have read and agree to the
+              <button type="button" (click)="openDoaPolicy()">DOA &amp; Refund Policy</button>.
+            </span>
+          </label>
+        </div>
+
+        @if (cartHasPlants()) {
+        <p class="plant-shipping-warning">
+          &#128230; Plant orders placed before 12 PM Thursday ship on Saturday. Orders placed after this cutoff will be shipped the following Saturday.
+        </p>
+        }
+
+        <div class="cart-total"><span>Total</span><strong>&#8377;{{ cartTotal() }}</strong></div>
+        <p style="margin: 8px 0; padding: 8px; background: #fef3c7; border: 1px solid #fbbf24; border-radius: 6px; font-size: 0.85rem; color: #92400e;">📦 Shipping charges will be calculated &amp; communicated separately</p>
+        <div class="checkout-tooltip-wrap" [class.show-tip]="!doaPolicyAccepted()">
+          @if (!doaPolicyAccepted()) {
+          <span class="checkout-tooltip">Please read/check DOA policy before ordering.</span>
+          }
+          <button class="checkout-button" type="button" [disabled]="!doaPolicyAccepted()"
+            (click)="checkoutWhatsApp()">Checkout with WhatsApp</button>
+        </div>
+      </div>
+      } @else {
+      <p class="notice">Your cart is empty.</p>
+      }
+    </div>
+  </aside>
+  }
+
+  <footer>© 2026 Rags Aqua World (R.A.W) - Quality first.</footer>
+</div>
