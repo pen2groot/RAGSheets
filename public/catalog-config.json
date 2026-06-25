@@ -1,0 +1,5 @@
+{
+  "remoteUrl": "/api/catalog",
+  "fallbackUrl": "catalog.json",
+  "refreshMs": 60000
+}

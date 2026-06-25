@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 540">
+  <rect width="720" height="540" fill="#edf7f5"/>
+  <rect x="60" y="80" width="600" height="360" rx="18" fill="#314744"/>
+  <g fill="#9ad7d3">
+    <rect x="96" y="120" width="150" height="110" rx="8"/>
+    <rect x="285" y="120" width="150" height="110" rx="8"/>
+    <rect x="474" y="120" width="150" height="110" rx="8"/>
+    <rect x="96" y="276" width="150" height="110" rx="8"/>
+    <rect x="285" y="276" width="150" height="110" rx="8"/>
+    <rect x="474" y="276" width="150" height="110" rx="8"/>
+  </g>
+  <g fill="#ffffff" opacity=".55">
+    <circle cx="132" cy="150" r="8"/>
+    <circle cx="514" cy="310" r="7"/>
+    <circle cx="345" cy="172" r="6"/>
+  </g>
+  <text x="360" y="492" text-anchor="middle" font-family="Arial" font-size="28" fill="#34504d">Breeding room placeholder</text>
+</svg>

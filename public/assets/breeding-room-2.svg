@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 540">
+  <rect width="720" height="540" fill="#eef8f0"/>
+  <rect x="70" y="90" width="580" height="330" rx="20" fill="#1c5558"/>
+  <rect x="105" y="126" width="510" height="98" rx="10" fill="#a6dfdc"/>
+  <rect x="105" y="256" width="510" height="98" rx="10" fill="#a6dfdc"/>
+  <path d="M105 208c82-32 158-29 230 3 94 42 180 34 280-12v25H105z" fill="#5faeb0" opacity=".7"/>
+  <path d="M105 338c82-32 158-29 230 3 94 42 180 34 280-12v25H105z" fill="#5faeb0" opacity=".7"/>
+  <g fill="#314744">
+    <rect x="150" y="400" width="30" height="70"/>
+    <rect x="540" y="400" width="30" height="70"/>
+  </g>
+  <text x="360" y="492" text-anchor="middle" font-family="Arial" font-size="28" fill="#34504d">Grow-out tanks placeholder</text>
+</svg>

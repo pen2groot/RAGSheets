@@ -1,0 +1,55 @@
+<svg class="background-fishes" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="tankWater" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#e8fcff" />
+      <stop offset="0.55" stop-color="#9edee0" />
+      <stop offset="1" stop-color="#3d9fa5" />
+    </linearGradient>
+
+    <g id="neonTetra">
+      <ellipse cx="0" cy="0" rx="54" ry="20" fill="#244d78" />
+      <path d="M-48 0l-36-25v50z" fill="#1a365a" />
+      <path d="M-18 -6h62" stroke="#1ee8ff" stroke-width="7" stroke-linecap="round" />
+      <path d="M-12 9h38" stroke="#ef613f" stroke-width="8" stroke-linecap="round" />
+      <circle cx="34" cy="-6" r="4" fill="#0d1619" />
+    </g>
+
+    <g id="rummyNose">
+      <ellipse cx="0" cy="0" rx="60" ry="22" fill="#d9d7c9" />
+      <path d="M-56 0l-35-24v48z" fill="#101820" />
+      <path d="M-88 -16l20 16-20 16" fill="none" stroke="#ffffff" stroke-width="7" />
+      <path d="M36 -15c18 4 29 12 36 24" fill="#e6372d" />
+      <circle cx="42" cy="-4" r="4" fill="#0d1619" />
+    </g>
+  </defs>
+
+  <!-- Background water -->
+  <rect width="1400" height="900" fill="url(#tankWater)" />
+
+  <!-- Far background - very transparent -->
+  <g opacity="0.15">
+    <use href="#neonTetra" x="200" y="150" transform="scale(-1, 1)" />
+    <use href="#rummyNose" x="600" y="300" />
+    <use href="#neonTetra" x="1000" y="200" transform="scale(-1, 1)" />
+    <use href="#rummyNose" x="1200" y="500" />
+    <use href="#neonTetra" x="300" y="750" />
+  </g>
+
+  <!-- Mid background -->
+  <g opacity="0.35">
+    <use href="#rummyNose" x="150" y="450" transform="scale(-1, 1)" />
+    <use href="#neonTetra" x="450" y="650" />
+    <use href="#rummyNose" x="750" y="550" transform="scale(-1, 1)" />
+    <use href="#neonTetra" x="1100" y="750" />
+    <use href="#rummyNose" x="850" y="200" />
+  </g>
+
+  <!-- Foreground - most visible -->
+  <g opacity="0.55">
+    <use href="#neonTetra" x="300" y="700" transform="scale(-1, 1)" />
+    <use href="#rummyNose" x="950" y="100" />
+    <use href="#neonTetra" x="550" y="200" />
+    <use href="#rummyNose" x="1250" y="650" transform="scale(-1, 1)" />
+    <use href="#neonTetra" x="1050" y="450" />
+  </g>
+</svg>

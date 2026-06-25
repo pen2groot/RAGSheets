@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 540">
+  <rect width="720" height="540" fill="#f6f8ef"/>
+  <rect x="80" y="76" width="250" height="350" rx="18" fill="#34504d"/>
+  <rect x="390" y="76" width="250" height="350" rx="18" fill="#34504d"/>
+  <rect x="112" y="112" width="186" height="120" rx="10" fill="#93d3cb"/>
+  <rect x="112" y="270" width="186" height="120" rx="10" fill="#93d3cb"/>
+  <rect x="422" y="112" width="186" height="278" rx="10" fill="#93d3cb"/>
+  <g fill="#24775d">
+    <path d="M156 388c-12-75-3-120 29-164 12 70 1 122-29 164z"/>
+    <path d="M508 390c-18-88-4-147 40-206 16 87-3 153-40 206z"/>
+  </g>
+  <g fill="#ffffff" opacity=".55">
+    <circle cx="460" cy="150" r="8"/>
+    <circle cx="570" cy="212" r="6"/>
+    <circle cx="210" cy="310" r="7"/>
+  </g>
+  <text x="360" y="492" text-anchor="middle" font-family="Arial" font-size="28" fill="#34504d">Conditioning corner placeholder</text>
+</svg>
