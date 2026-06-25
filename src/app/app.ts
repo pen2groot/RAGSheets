@@ -163,9 +163,14 @@ export class App implements OnDestroy {
 
 
   readonly galleryImages = [
-    { title: 'Breeding rack placeholder', src: 'assets/breeding-room-1.svg' },
-    { title: 'Grow-out tanks placeholder', src: 'assets/breeding-room-2.svg' },
-    { title: 'Conditioning corner placeholder', src: 'assets/breeding-room-3.svg' },
+    { src: 'assets/RAW (1).jpeg' },
+    { src: 'assets/RAW (2).jpeg' },
+    { src: 'assets/RAW (3).jpeg' },
+    { src: 'assets/RAW (4).jpeg' },
+    { src: 'assets/RAW (5).jpeg' },
+    { src: 'assets/RAW (6).jpeg' },
+    { src: 'assets/RAW (7).jpeg' },
+    { src: 'assets/RAW (8).jpeg' },
   ];
 
   readonly allFish = computed<DisplayFish[]>(() =>

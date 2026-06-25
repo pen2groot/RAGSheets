@@ -240,10 +240,9 @@ Healthy fish come from knowledge, care, and patience — not shortcuts.<br><br>
           </button>
           @if (galleryOpen()) {
           <div class="gallery-grid">
-            @for (image of galleryImages; track image.title) {
+            @for (image of galleryImages; track image.src) {
             <figure>
-              <img [src]="image.src" [alt]="image.title" />
-              <figcaption>{{ image.title }}</figcaption>
+              <img [src]="image.src" alt="Gallery image" />
             </figure>
             }
           </div>
